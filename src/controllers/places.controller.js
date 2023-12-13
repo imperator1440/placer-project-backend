@@ -74,7 +74,7 @@ const updatePlaceById = (req, res, next) => {
 
   DUMMY_PLACES[placeIndex] = updatedPlace;
 
-  res.status(200).json({place: updatedPlace});
+  res.status(200).json({ place: updatedPlace });
 };
 
 const deletePlaceById = (req, res, next) => {
