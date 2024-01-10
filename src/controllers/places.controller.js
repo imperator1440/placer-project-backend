@@ -107,7 +107,7 @@ const updatePlaceById = async (req, res, next) => {
   res.status(200).json({ place: updatedPlace.toObject({ getters: true }) });
 };
 
-const deletePlaceById = await (req, res, next) => {
+const deletePlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
 
   let place;
