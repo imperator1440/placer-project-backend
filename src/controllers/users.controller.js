@@ -16,7 +16,8 @@ const getUsers = async (req, res, next) => {
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError('Invalid inputs parameters.', 422);
+    const error = new HttpError('Invalid inputs parameters.', 422);
+    return next(error);
   }
 
   const { name, email, password } = req.body;
