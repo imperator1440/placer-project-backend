@@ -74,7 +74,7 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json(createPlace);
+  res.status(201).json({place: createdPlace.toObject({ getters:true })});
 };
 
 const updatePlaceById = async (req, res, next) => {

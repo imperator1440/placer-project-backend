@@ -1,22 +1,19 @@
-const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'senya',
-    email: 'test@mail.com',
-    password: 'testpass'
-  }
-];
-
-const uuid = require('uuid/v4');
 const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error.model');
+const User = require('../models/user.model');
 
-const getUsers = (req, res, next) => {
-  res.json({ users: DUMMY_USERS });
+const getUsers = async (req, res, next) => {
+
+
+  try {
+
+  } catch(err) {
+
+  }
 };
 
-const signup = (req, res, next) => {
+const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new HttpError('Invalid inputs parameters.', 422);
@@ -24,21 +21,35 @@ const signup = (req, res, next) => {
 
   const { name, email, password } = req.body;
 
-  const hasUser = DUMMY_USERS.find(user => user.email === email);
-  if (hasUser) {
-    throw new HttpError('Could not create user, email already exists.', 401);
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch(err) {
+    const error = new HttpError('Signing up failed, please try again later.', 500);
+    return next(error);
   }
-  
-  const createdUser = {
-    id: uuid(),
+
+  if (existingUser) {
+    const error = HttpError('User already exists.', 422);
+    return next(error);
+  }
+
+  const createdUser = new User({
     name,
     email,
-    password
-  };
+    image: 'ímg',
+    password,
+    places
+  });
 
-  DUMMY_USERS.push(createdUser);
+  try {
+    await createdUser.save();
+  } catch(err) {
+    const error = new HttpError('Creating user fail, please try again', 500);
+    return next(error);
+  }
 
-  res.status(201).json({ user: createdUser });
+  res.status(201).json({ user: createdUser.toObject({ getters: true })});
 };
 
 const login = (req, res, next) => {
