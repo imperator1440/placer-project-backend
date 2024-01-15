@@ -4,13 +4,16 @@ const HttpError = require('../models/http-error.model');
 const User = require('../models/user.model');
 
 const getUsers = async (req, res, next) => {
-
-
+  
+  let users;
   try {
-
+    users = await Users.find({}, '-password');
   } catch(err) {
-
+    const error = new HttpError('Fetching users failed, please try again later.', 500);
+    return next(error);
   }
+
+  res.json({users: users.map(user => user.toObject({ getters: true }))})
 };
 
 const signup = async (req, res, next) => {
