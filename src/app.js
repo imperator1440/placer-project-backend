@@ -27,7 +27,6 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('')
   .then(() => {
     app.listen(5000);
   })
