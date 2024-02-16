@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (req.file) {
-    fs.unlink(req.file.path, err => {
+    fs.unlink(req.file.path, (err) => {
       console.log(err);
     });
   }
@@ -47,10 +47,12 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://imperator1440:kxma0M443iYrI1tb@cluster0.sold7h7.mongodb.net/mern?retryWrites=true&w=majority')
+  .connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.sold7h7.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+  )
   .then(() => {
     app.listen(5000);
   })
-  .catch(error => {
+  .catch((error) => {
     console.log(error);
   });

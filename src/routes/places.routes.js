@@ -19,17 +19,14 @@ router.post(
   [
     check('title').notEmpty(),
     check('description').isLength({ min: 5 }),
-    check('address').not().isEmpty() 
+    check('address').not().isEmpty(),
   ],
   placesController.createPlace
 );
 
 router.patch(
   '/:pid',
-  [
-    check('title').notEmpty(),
-    check('description').isLength({ min: 5 }),
-  ],
+  [check('title').notEmpty(), check('description').isLength({ min: 5 })],
   placesController.updatePlaceById
 );
 
